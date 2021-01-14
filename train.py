@@ -14,13 +14,15 @@ from azureml.data.dataset_factory import TabularDatasetFactory
 # Data is located at:
 # "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
 
-ds = ### YOUR CODE HERE ###
+# +
+# import data and created a pandas dataframe
 
-x, y = clean_data(ds)
+from azureml.core import Dataset, Datastore
+from azureml.data.datapath import DataPath
 
-# TODO: Split data into train and test sets.
-
-### YOUR CODE HERE ###a
+ds = Dataset.Tabular.from_delimited_files(path="https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv")
+ds.to_pandas_dataframe()
+# -
 
 run = Run.get_context()
 
@@ -49,7 +51,20 @@ def clean_data(data):
     x_df["poutcome"] = x_df.poutcome.apply(lambda s: 1 if s == "success" else 0)
 
     y_df = x_df.pop("y").apply(lambda s: 1 if s == "yes" else 0)
-    
+    return x_df, y_df
+
+
+X, y = clean_data(ds)
+
+# +
+# split the data into train and test sets
+
+from sklearn.model_selection import train_test_split
+
+x_train,X_test,y_train,y_test  = train_test_split(X,y, test_size=0.3, random_state=101)
+
+
+# -
 
 def main():
     # Add arguments to script
@@ -63,10 +78,12 @@ def main():
     run.log("Regularization Strength:", np.float(args.C))
     run.log("Max iterations:", np.int(args.max_iter))
 
-    model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
+    model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(X_train, y_train)
 
-    accuracy = model.score(x_test, y_test)
+    accuracy = model.score(X_test, y_test)
     run.log("Accuracy", np.float(accuracy))
 
 if __name__ == '__main__':
     main()
+
+
