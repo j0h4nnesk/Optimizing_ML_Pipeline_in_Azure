@@ -16,9 +16,9 @@ See the diagram below showing the main steps followed in the project:
 **Step 4:** Comparing the results of the two methods and writing a research summary, this RAEADME.md.
 
 ## Summary
-**In 1-2 sentences, explain the problem statement: e.g "This dataset contains data about... we seek to predict..."**
+The data is related with direct marketing campaigns (phone calls) of a Portuguese banking institution. The classification goal is to predict if the client will subscribe a term deposit (variable y). 
 
-**In 1-2 sentences, explain the solution: e.g. "The best performing model was a ..."**
+The best performing model with **0.91627 accuracy** was the **AutoML model** with ID: AutoML_b17da2a0-ae52-4cda-b25b-947e7005ef9e_47, which used **VotingEnsemble** algorith. The best **HyperDrive model**, ID: HD_349fefe5-1530-4768-b03f-184da54ad495_0, using **Scikit-learn logistic regression** had nearly as good accuracy of **0.90895**.
 
 ## Scikit-learn Pipeline
 **Explain the pipeline architecture, including data, hyperparameter tuning, and classification algorithm.**
