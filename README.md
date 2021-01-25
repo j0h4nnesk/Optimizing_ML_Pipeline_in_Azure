@@ -21,9 +21,33 @@ The data is related with direct marketing campaigns (phone calls) of a Portugues
 The best performing model with **0.91627 accuracy** was the **AutoML model** with ID: AutoML_b17da2a0-ae52-4cda-b25b-947e7005ef9e_47, which used **VotingEnsemble** algorith. The best **HyperDrive model**, ID: HD_349fefe5-1530-4768-b03f-184da54ad495_0, using **Scikit-learn logistic regression** had nearly as good accuracy of **0.90895**.
 
 ## Scikit-learn Pipeline
-**Explain the pipeline architecture, including data, hyperparameter tuning, and classification algorithm.**
 
-**What are the benefits of the parameter sampler you chose?**
+Built Scikit-learn pipeline uses [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) model for classification, while the hyperparameters were tuned using [HyperDrive](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters). The used hyperparameters were C (Inverse of regularization strength) with unform value distribution and max_iter (Maximum number of iterations taken for the solvers to converge) with discrete values for choice. 
+
+**Parameter Sampling**
+
+RandomParameterSampling, where hyperparameter values are randomly selected from the defined search space, was used as a sampler. It is a good choice as it is [more efficient, though less exhaustive compared](https://www.sciencedirect.com/science/article/pii/S1674862X19300047) to Grid grid search to search over the search space.
+
+```
+ps = RandomParameterSampling({
+    '--max_iter' : choice(20,40,80,100,150,200),
+    '--C' : uniform(0.001,10)
+}) 
+```
+**Early Stopping Policy**
+
+Early stopping policy was used to terminate poorly performing runs, this also improves computational efficiency. Here [**Bandit policy**](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters) was used as an early stopping policy, and was configured as follows:
+```
+policy = BanditPolicy(evaluation_interval=2,slack_factor=0.1,delay_evaluation=1)
+```
+
+Where:
+
+*evaluation_interval*: the frequency for applying the policy
+
+*delay_evaluation*: delays the first policy evaluation for a specified number of intervals
+
+*slack_factor*: the slack allowed with respect to the best performing training run. Specifies the allowable slack as a ratio.
 
 **What are the benefits of the early stopping policy you chose?**
 
