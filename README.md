@@ -36,7 +36,7 @@ ps = RandomParameterSampling({
 ```
 **Early Stopping Policy**
 
-Early stopping policy was used to terminate poorly performing runs, this also improves computational efficiency. Here [**Bandit policy**](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters) was used as an early stopping policy, and was configured as follows:
+This strategy of stopping early based on the validation set performance is called [Early Stopping](https://towardsdatascience.com/early-stopping-a-cool-strategy-to-regularize-neural-networks-bfdeca6d722e). Early stopping policy helps to terminate poorly performing runs and improves computational efficiency. Here [Bandit policy](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters) was used as an early stopping policy, and was configured as follows:
 ```
 policy = BanditPolicy(evaluation_interval=2,slack_factor=0.1,delay_evaluation=1)
 ```
@@ -67,11 +67,16 @@ Where:
 *n_cross_validations* = [This parameter sets how many cross validations to perform, based on the same number of folds](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cross-validation-data-splits) (folds=subsections). [Cross validation is a technique that allows us to produce test set like scoring metrics using the training set. It simulates the effects of “going out of sample” using just our training data, so we can get a sense of how well our model generalizes.](https://towardsdatascience.com/understanding-cross-validation-419dbd47e9bd) Chosen value '2' means, two different trainings, each training using 1/2 of the data, and each validation using 1/2 of the data with a different holdout fold each time. As a result, metrics are calculated with the average of the two validation metrics.
 
 ## Pipeline comparison
-**Compare the two models and their performance. What are the differences in accuracy? In architecture? If there was a difference, why do you think there was one?**
+
+The two models, AutoML and Hyperdrive, both had quite similar performance in our experiments. Best AutoML run had an accuracy of **0.91627 accuracy**. Whereas, the best **Hyperdrive** run had an accuracy of **0.90895** - being also adequate and nearly as good. The both pipelines make use of the same data cleansing process, however AutoML adds a preprocessing step prior to model training, as [in every automated machine learning experiment data is automatically scaled or normalized to help algorithms perform well](https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml). 
+
+Architectually the two models are quite different. AutoML model uses [Voting Ensemble](https://machinelearningmastery.com/voting-ensembles-with-python/) algorith which works by combining the predictions from multiple models and In the case of classification, the predictions for each label are summed and the label with the majority vote is predicted. HyperDrive model using [Logistic Regression](https://machinelearningmastery.com/logistic-regression-for-machine-learning/) algorithm, uses a much simpler logistic function with a threshold to carry out binary classification. 
+
+Given more time to do more iterations we might have seen greater differences in metrics, as AutoML could result in better performance by going through multiple classifciation models while the HyperDrive option still just uses the Logistic Regression algorithm.
 
 ## Future work
-**What are some areas of improvement for future experiments? Why might these improvements help the model?**
 
-## Proof of cluster clean up
-**If you did not delete your compute cluster in the code, please complete this section. Otherwise, delete this section.**
-**Image of cluster marked for deletion**
+For future work it would be interesting to do more exploratory data analysis prior to experimenting, as to find out e.g. imbalances in target classes, which is a quite common issues with classification problems impacting the model's accuracy - accuracy of majority class can be very high, while minority class accuracy can be very poor. Thus only evaluating model's performance by a simple metric like accuracy might be misleading. 
+
+With HyperDrive model we could also try other methods for hyperparameter selection after initial search with Ramdom Sampling. Here using Grid Search we can refine and narrow the search to find the best hyperparameters. With AutoML, we could in turn increase the number of iterations allowing the runs to go through more models, and so find the best possible model for a chosen problem.
+
