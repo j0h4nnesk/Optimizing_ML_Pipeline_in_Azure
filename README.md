@@ -81,3 +81,4 @@ For future work it would be interesting to do more exploratory data analysis pri
 With HyperDrive model we could also try other methods for hyperparameter selection after initial search with Ramdom Sampling. Here using Grid Search we can refine and narrow the search to find the best hyperparameters, in order to get the [optimal performance out of the model](https://medium.com/@jorgesleonel/hyperparameters-in-machine-deep-learning-ca69ad10b981). With AutoML, we could in turn increase the number of iterations allowing the runs to go through more models, and so find the best possible model for a chosen problem.
 
 ## Proof of cluster clean up 
+![alt text](images/delete_Compute.png)
