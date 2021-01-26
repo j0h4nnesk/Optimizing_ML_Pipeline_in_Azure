@@ -18,7 +18,7 @@ See the diagram below showing the main steps followed in the project:
 ## Summary
 The data is related with direct marketing campaigns (phone calls) of a Portuguese banking institution. The classification goal is to predict if the client will subscribe a term deposit (variable y). 
 
-The best performing model with **0.91627 accuracy** was the **AutoML model** with ID: AutoML_b17da2a0-ae52-4cda-b25b-947e7005ef9e_47, which used **VotingEnsemble** algorith. The best **HyperDrive model**, ID: HD_349fefe5-1530-4768-b03f-184da54ad495_0, using **Scikit-learn logistic regression** had nearly as good accuracy of **0.90895**.
+The best performing model with **0.91627 accuracy** was the **AutoML model** which used **VotingEnsemble** algorith. The best **HyperDrive model** using **Scikit-learn logistic regression** had nearly as good accuracy of **0.90895**.
 
 ## Scikit-learn Pipeline
 
@@ -40,14 +40,8 @@ Early stopping policy was used to terminate poorly performing runs, this also im
 ```
 policy = BanditPolicy(evaluation_interval=2,slack_factor=0.1,delay_evaluation=1)
 ```
+In this example, the early termination policy is applied at every second interval when metrics are reported, starting at evaluation interval 1. Any run whose best metric is less than (1/(1+0.1) or 91% of the best performing run will be terminated.
 
-Where:
-
-*evaluation_interval*: the frequency for applying the policy
-
-*delay_evaluation*: delays the first policy evaluation for a specified number of intervals
-
-*slack_factor*: the slack allowed with respect to the best performing training run. Specifies the allowable slack as a ratio.
 
 **What are the benefits of the early stopping policy you chose?**
 
