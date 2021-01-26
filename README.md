@@ -47,7 +47,7 @@ In this example, the early termination policy is applied at every second interva
 [AutoML](https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml) works in a way that it creates a number of pipelines in parallel that tries different algorithms and parameters for you. The service iterates through ML algorithms paired with feature selections, where each iteration produces a model with a training score. The higher the score, the better the model is considered to "fit" your data. It will stop once it hits the exit criteria defined in the experiment.
 
 Here I chose the following confifuration for the AutoML run:
-'''
+```
 automl_config = AutoMLConfig(
     experiment_timeout_minutes=30,
     task='classification',
@@ -55,8 +55,9 @@ automl_config = AutoMLConfig(
     training_data=ds,
     label_column_name='y',
     n_cross_validations=2)
-'''
+```
 Where:
+
 *experiment_timeout_minutes* = Maximum amount of time in hours that all iterations combined can take before the experiment terminates. 
 
 *task* = Defines what kind of problem to solve, here 'classification' was chosen
